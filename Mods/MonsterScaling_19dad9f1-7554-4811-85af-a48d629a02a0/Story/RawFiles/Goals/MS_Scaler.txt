@@ -1,0 +1,50 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_ASC_HIGHEST_LEVEL("HighestLevel",1);
+KBSECTION
+IF
+	RegionStarted(_)
+AND
+	DB_IsPlayer(_Character)
+AND
+	CharacterGetLevel(_Character, _Level)
+AND
+	DB_ASC_HIGHEST_LEVEL("HighestLevel", _HighestLevel)
+AND
+	_Level > _HighestLevel
+THEN
+	NOT DB_ASC_HIGHEST_LEVEL("HighestLevel", _HighestLevel);
+	DB_ASC_HIGHEST_LEVEL("HighestLevel", _Level);
+
+
+IF
+	CharacterLeveledUp(_Character)
+AND
+	DB_IsPlayer(_Character)
+AND
+	CharacterGetLevel(_Character, _Level)
+AND
+	DB_ASC_HIGHEST_LEVEL("HighestLevel", _HighestLevel)
+AND
+	_Level > _HighestLevel
+THEN
+	NOT DB_ASC_HIGHEST_LEVEL("HighestLevel", _HighestLevel);
+	DB_ASC_HIGHEST_LEVEL("HighestLevel", _Level);
+
+
+IF
+	ObjectEnteredCombat((CHARACTERGUID)_Character, _)
+AND
+	NOT DB_IsPlayer(_Character)
+AND
+	CharacterGetLevel(_Character, _Level)
+AND
+	DB_ASC_HIGHEST_LEVEL("HighestLevel", _HighestLevel)
+AND
+	_Level < _HighestLevel
+THEN
+	CharacterLevelUpTo(_Character, _HighestLevel);
+EXITSECTION
+
+ENDEXITSECTION
