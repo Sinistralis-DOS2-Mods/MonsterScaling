@@ -1,0 +1,9 @@
+new entry "MS_Orb_of_Strife"
+type "Object"
+data "ModifierType" "Item"
+data "Flags" "BleedingImmunity;SleepingImmunity;PoisonImmunity;SlowedImmunity;KnockdownImmunity;CrippledImmunity;BlindImmunity;FearImmunity;CharmImmunity"
+data "InventoryTab" "Auto"
+using "_Generics"
+data "Value" "0"
+data "Weight" "0"
+

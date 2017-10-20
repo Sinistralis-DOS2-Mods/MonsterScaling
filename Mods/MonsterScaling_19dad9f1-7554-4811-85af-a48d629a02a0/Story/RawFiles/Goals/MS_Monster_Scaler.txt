@@ -1,0 +1,204 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//DB_MS_Orb((ITEMGUID)9f4bea07-e835-4213-850e-3f0f9768d0cb);
+
+DB_MS_ScalingEnabled(2);
+
+DB_MS_HighestLevel("HighestLevel", 1, 0, 1);
+
+DB_MS_ScalingFlag("MS_DecreaseMonsterDifficulty", -1);
+DB_MS_ScalingFlag("MS_IncreaseMonsterDifficulty", 1);
+
+DB_MS_ResetFlag("MS_ResetMonsterDifficulty");
+
+DB_MS_ToggleFlag("MS_ToggleMonsterDifficulty");
+
+DB_MS_GaveItem(0);
+KBSECTION
+PROC
+	PROC_MS_GiveOrb()
+AND
+	DB_IsPlayer(_Character)
+AND
+	ItemTemplateIsInCharacterInventory(_Character, "MS_Orb_of_Strife_9f4bea07-e835-4213-850e-3f0f9768d0cb", 0)
+THEN
+	ItemTemplateAddTo("MS_Orb_of_Strife_9f4bea07-e835-4213-850e-3f0f9768d0cb", _Character, 1);
+
+PROC
+	PROC_MS_DisplayToggle((INTEGER)_IsEnabled)
+AND
+	_IsEnabled == 0
+AND
+	DB_IsPlayer(_Character)
+THEN
+	CharacterStatusText(_Character, "Monster Scaling Disabled!");
+
+PROC
+	PROC_MS_DisplayToggle((INTEGER)_IsEnabled)
+AND
+	_IsEnabled == 1
+AND
+	DB_IsPlayer(_Character)
+THEN
+	CharacterStatusText(_Character, "Monster Scaling Enabled!");
+
+PROC
+	PROC_MS_DisplayDifficulty((INTEGER)_Difficulty)
+AND
+	_Difficulty > 0
+AND
+	IntegertoString(_Difficulty, _StringDifficulty)
+AND
+	StringConcatenate("Monster Scaling set to +", _StringDifficulty, _Message)
+AND
+	DB_IsPlayer(_Character)
+THEN
+	CharacterStatusText(_Character, _Message);
+
+PROC
+	PROC_MS_DisplayDifficulty((INTEGER)_Difficulty)
+AND
+	_Difficulty == 0
+AND
+	DB_IsPlayer(_Character)
+THEN
+	CharacterStatusText(_Character, "Monster Scaling set to 0");
+
+PROC
+	PROC_MS_DisplayDifficulty((INTEGER)_Difficulty)
+AND
+	_Difficulty < 0
+AND
+	IntegertoString(_Difficulty, _StringDifficulty)
+AND
+	StringConcatenate("Monster Scaling set to ", _StringDifficulty, _Message)
+AND
+	DB_IsPlayer(_Character)
+THEN
+	CharacterStatusText(_Character, _Message);
+
+PROC
+	PROC_MS_AlterScalingDifficulty((STRING)_Flag)
+AND
+	DB_MS_ScalingFlag(_Flag, _ChangeMod)
+AND
+	DB_MS_HighestLevel("HighestLevel", _Level, _CurrentMod, _Total)
+AND
+	IntegerSum(_CurrentMod, _ChangeMod, _NewMod)
+AND
+	IntegerSum(_Level, _NewMod, _NewTotal)
+THEN
+	NOT DB_MS_HighestLevel("HighestLevel", _Level, _CurrentMod, _Total);
+	DB_MS_HighestLevel("HighestLevel", _Level, _NewMod, _NewTotal);
+	PROC_MS_DisplayDifficulty(_NewMod);
+	GlobalClearFlag(_Flag);
+
+PROC
+	PROC_MS_ResetScalingDifficulty((STRING)_Flag)
+AND
+	DB_MS_ResetFlag(_Flag)
+AND
+	DB_MS_HighestLevel("HighestLevel", _Level, _CurrentMod, _Total)
+THEN
+	NOT DB_MS_HighestLevel("HighestLevel", _Level, _CurrentMod, _Total);
+	DB_MS_HighestLevel("HighestLevel", _Level, 0, _Level);
+	PROC_MS_DisplayDifficulty(0);
+	GlobalClearFlag(_Flag);
+
+PROC
+	PROC_MS_ToggleScalingDifficulty((STRING)_Flag)
+AND
+	DB_MS_ToggleFlag(_Flag)
+AND
+	DB_MS_ScalingEnabled(_IsEnabled)
+AND
+	IntegerSum(_IsEnabled, 1, _ModMe)
+AND
+	IntegerModulo(_ModMe, 2, _NewIsEnabled)
+THEN
+	NOT DB_MS_ScalingEnabled(_IsEnabled);
+	DB_MS_ScalingEnabled(_NewIsEnabled);
+	PROC_MS_DisplayToggle(_NewIsEnabled);
+
+
+PROC
+	PROC_MS_UpdateLevel()
+AND
+	DB_IsPlayer(_Character)
+AND
+	CharacterGetLevel(_Character, _Level)
+AND
+	DB_MS_HighestLevel("HighestLevel", _HighestLevel, _Mod, _LevelScale)
+AND
+	_Level > _HighestLevel
+AND
+	IntegerSum(_Level, _Mod, _NewScale)
+THEN
+	NOT DB_MS_HighestLevel("HighestLevel", _HighestLevel, _Mod, _LevelScale);
+	DB_MS_HighestLevel("HighestLevel", _Level, _Mod, _NewScale);
+
+PROC
+	PROC_MS_EnableScaling()
+AND
+	DB_MS_ScalingEnabled(_IsEnabled)
+AND
+	_IsEnabled == 2
+THEN
+	GlobalSetFlag("MS_ToggleMonsterDifficulty");
+
+
+IF
+	ObjectEnteredCombat((CHARACTERGUID)_Character, _)
+AND
+	DB_MS_ScalingEnabled(1)
+AND
+	NOT DB_IsPlayer(_Character)
+AND
+	CharacterGetLevel(_Character, _Level)
+AND
+	DB_MS_HighestLevel("HighestLevel", _, _, _HighestLevel)
+AND
+	_Level < _HighestLevel
+THEN
+	CharacterLevelUpTo(_Character, _HighestLevel);
+
+IF
+	CharacterUsedItemTemplate(_Character, "MS_Orb_of_Strife_9f4bea07-e835-4213-850e-3f0f9768d0cb", _Item)
+THEN
+	Proc_StartDialog(0, "MS_OrbOfStrife", _Item, _Character);
+
+
+IF
+	SavegameLoaded(_,_,_,_)
+THEN
+	PROC_MS_GiveOrb();
+	PROC_MS_UpdateLevel();
+	PROC_MS_EnableScaling();
+
+IF
+	RegionStarted(_)
+THEN
+	PROC_MS_GiveOrb();
+	PROC_MS_UpdateLevel();
+	PROC_MS_EnableScaling();
+
+IF
+	CharacterLeveledUp(_Character)
+THEN
+	PROC_MS_UpdateLevel();
+
+IF
+	GlobalFlagSet(_Flag)
+THEN
+	PROC_MS_ToggleScalingDifficulty(_Flag);
+	PROC_MS_AlterScalingDifficulty(_Flag);
+	PROC_MS_ResetScalingDifficulty(_Flag);
+
+IF
+	GlobalFlagCleared(_Flag)
+THEN
+	PROC_MS_ToggleScalingDifficulty(_Flag);
+EXITSECTION
+
+ENDEXITSECTION
