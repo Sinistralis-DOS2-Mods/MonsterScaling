@@ -1,15 +1,15 @@
 ECHO is on.
 Projects/*
 #Story files that can be compiled by the user (only raw files needed).
-Mods/Ascension_280a8cf2-98e4-44da-8908-23d451c52ece/meta.lsx
-Mods/Ascension_280a8cf2-98e4-44da-8908-23d451c52ece/Story/log.txt
-Mods/Ascension_280a8cf2-98e4-44da-8908-23d451c52ece/Story/goals.div
-Mods/Ascension_280a8cf2-98e4-44da-8908-23d451c52ece/Story/goals.raw
-Mods/Ascension_280a8cf2-98e4-44da-8908-23d451c52ece/Story/story.div
-Mods/Ascension_280a8cf2-98e4-44da-8908-23d451c52ece/Story/story.div.osi
-Mods/Ascension_280a8cf2-98e4-44da-8908-23d451c52ece/Story/story_ac.dat
-Mods/Ascension_280a8cf2-98e4-44da-8908-23d451c52ece/Story/RawFiles/story_definitions.div
-Mods/Ascension_280a8cf2-98e4-44da-8908-23d451c52ece/Story/RawFiles/story_header.div
+Mods/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/meta.lsx
+Mods/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/Story/log.txt
+Mods/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/Story/goals.div
+Mods/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/Story/goals.raw
+Mods/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/Story/story.div
+Mods/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/Story/story.div.osi
+Mods/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/Story/story_ac.dat
+Mods/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/Story/RawFiles/story_definitions.div
+Mods/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/Story/RawFiles/story_header.div
 
 #Assets
-Public/Ascension_280a8cf2-98e4-44da-8908-23d451c52ece/Assets/*
+Public/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/Assets/*
