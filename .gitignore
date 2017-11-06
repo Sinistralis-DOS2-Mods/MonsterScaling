@@ -1,4 +1,3 @@
-ECHO is on.
 Projects/*
 #Story files that can be compiled by the user (only raw files needed).
 Mods/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/meta.lsx
@@ -10,6 +9,7 @@ Mods/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/Story/story.div.osi
 Mods/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/Story/story_ac.dat
 Mods/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/Story/RawFiles/story_definitions.div
 Mods/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/Story/RawFiles/story_header.div
+Mods/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/Levels/*/WorldMap/Minimap.dds
 
 #Assets
 Public/MonsterScaling_19dad9f1-7554-4811-85af-a48d629a02a0/Assets/*
